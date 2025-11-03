@@ -7,19 +7,15 @@ TEST(GraphIOTest, WriteGraphToGraphviz) {
   using VertexT = rrt::geo::Point<double>;
   using EdgeT = double;
 
-  const auto graphviz_vertex_writer{
-      [](graaf::vertex_id_t vertex_id, const VertexT &vertex) -> std::string {
-        std::string color = "mediumspringgreen";
-        return fmt::format(
-            "label=\"{} [{:.3f},{:.3f}]\", fillcolor={}, style=filled",
-            vertex_id, vertex.x(), vertex.y(), color);
-      }};
+  const auto graphviz_vertex_writer{[](graaf::vertex_id_t vertex_id, const VertexT &vertex) -> std::string {
+    std::string color = "mediumspringgreen";
+    return fmt::format("label=\"{} [{:.3f},{:.3f}]\", fillcolor={}, style=filled", vertex_id, vertex.x(), vertex.y(),
+                       color);
+  }};
 
-  const auto graphviz_edge_writer{[](const graaf::edge_id_t & /*edge_id*/,
-                                     const auto &edge) -> std::string {
+  const auto graphviz_edge_writer{[](const graaf::edge_id_t & /*edge_id*/, const auto &edge) -> std::string {
     const std::string style{"solid"};
-    return fmt::format("label=\"{}\", style={}, color=gray, fontcolor=gray",
-                       edge, style);
+    return fmt::format("label=\"{}\", style={}, color=gray, fontcolor=gray", edge, style);
   }};
 
   graaf::undirected_graph<VertexT, EdgeT> graph;
@@ -34,8 +30,7 @@ TEST(GraphIOTest, WriteGraphToGraphviz) {
   graph.add_edge(v3, v0, 4.1);
 
   GraphIO graph_io;
-  graph_io.serialize_to_graphviz(graph, "test_graph.dot",
-                                 graphviz_vertex_writer, graphviz_edge_writer);
+  graph_io.serialize_to_graphviz(graph, "test_graph.dot", graphviz_vertex_writer, graphviz_edge_writer);
 }
 
 TEST(GraphIOTest, WriteGraphToVtk) {

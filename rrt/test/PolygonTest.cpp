@@ -1,11 +1,11 @@
+#include <geo/include/IncidencePredicates.hpp>
 #include <geo/include/Polygon.hpp>
 #include <gtest/gtest.h>
 
 TEST(PolygonTest, ConstructPolygon) {
 
-  std::vector<rrt::geo::Point<double>> points = {
-      rrt::geo::Point(2.0, 2.0), rrt::geo::Point(3.0, 2.0),
-      rrt::geo::Point(3.0, 3.0), rrt::geo::Point(2.0, 3.0)};
+  std::vector<rrt::geo::Point<double>> points = {rrt::geo::Point(2.0, 2.0), rrt::geo::Point(3.0, 2.0),
+                                                 rrt::geo::Point(3.0, 3.0), rrt::geo::Point(2.0, 3.0)};
 
   rrt::geo::Polygon<double> polygon(std::move(points));
   EXPECT_EQ(polygon.size(), 4);
@@ -17,13 +17,12 @@ TEST(PolygonTest, PointInsideRectangle) {
   point_t point1(-0.5, -0.5);
   point_t point2(1.0, 1.0);
 
-  std::vector<point_t> poly_points = {
-      {-1.0, -1.0}, {1.0, -1.0}, {1.0, 1.0}, {-1.0, 1.0}};
+  std::vector<point_t> poly_points = {{-1.0, -1.0}, {1.0, -1.0}, {1.0, 1.0}, {-1.0, 1.0}};
   rrt::geo::Polygon<double> polygon(std::move(poly_points));
 
-  EXPECT_TRUE(point_is_inside(polygon, point0));
-  EXPECT_TRUE(point_is_inside(polygon, point1));
-  EXPECT_TRUE(point_is_inside(polygon, point2));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point0, polygon.points()));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point1, polygon.points()));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point2, polygon.points()));
 }
 
 TEST(PolygonTest, PointInsideT) {
@@ -33,15 +32,14 @@ TEST(PolygonTest, PointInsideT) {
   point_t point2(2.0, 1.0);
 
   // T-shaped polygon
-  std::vector<point_t> poly_points = {{0.5, 0.0},  {0.5, 3.0},  {2.0, 3.0},
-                                      {2.0, 3.5},  {-2.0, 3.5}, {-2.0, 3.0},
-                                      {-0.5, 3.0}, {-0.5, 0.0}};
+  std::vector<point_t> poly_points = {{0.5, 0.0},  {0.5, 3.0},  {2.0, 3.0},  {2.0, 3.5},
+                                      {-2.0, 3.5}, {-2.0, 3.0}, {-0.5, 3.0}, {-0.5, 0.0}};
 
   rrt::geo::Polygon<double> polygon(std::move(poly_points));
 
-  EXPECT_TRUE(point_is_inside(polygon, point0));
-  EXPECT_TRUE(point_is_inside(polygon, point1));
-  EXPECT_FALSE(point_is_inside(polygon, point2));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point0, polygon.points()));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point1, polygon.points()));
+  EXPECT_FALSE(rrt::geo::IncidencePredicates::intersects(point2, polygon.points()));
 }
 
 TEST(PolygonTest, PointInsideU) {
@@ -52,14 +50,13 @@ TEST(PolygonTest, PointInsideU) {
   point_t point3(8.01, 8.00);
 
   // U-shaped polygon
-  std::vector<point_t> poly_points = {{5.0, 0.0},   {5.0, 10.0}, {4.0, 10.0},
-                                      {4.0, 1.0},   {-4.0, 1.0}, {-4.0, 10.0},
-                                      {-5.0, 10.0}, {-5.0, 0.0}};
+  std::vector<point_t> poly_points = {{5.0, 0.0},  {5.0, 10.0},  {4.0, 10.0},  {4.0, 1.0},
+                                      {-4.0, 1.0}, {-4.0, 10.0}, {-5.0, 10.0}, {-5.0, 0.0}};
 
   rrt::geo::Polygon<double> polygon(std::move(poly_points));
 
-  EXPECT_TRUE(point_is_inside(polygon, point0));
-  EXPECT_TRUE(point_is_inside(polygon, point1));
-  EXPECT_TRUE(point_is_inside(polygon, point2));
-  EXPECT_FALSE(point_is_inside(polygon, point3));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point0, polygon.points()));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point1, polygon.points()));
+  EXPECT_TRUE(rrt::geo::IncidencePredicates::intersects(point2, polygon.points()));
+  EXPECT_FALSE(rrt::geo::IncidencePredicates::intersects(point3, polygon.points()));
 }

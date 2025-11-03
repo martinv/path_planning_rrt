@@ -14,38 +14,28 @@ public:
   /** Export graph and its data to a file for visualization and debugging
    * @param filename name of output file
    **/
-  template <typename VertexT, typename EdgeT, typename VertexWriter,
-            typename EdgeWriter>
-  static void
-  serialize_to_graphviz(const graaf::undirected_graph<VertexT, EdgeT> &graph,
-                        const std::string &filename,
-                        const VertexWriter &vertex_writer,
-                        const EdgeWriter &edgeWriter);
+  template <typename VertexT, typename EdgeT, typename VertexWriter, typename EdgeWriter>
+  static void serialize_to_graphviz(const graaf::undirected_graph<VertexT, EdgeT> &graph, const std::string &filename,
+                                    const VertexWriter &vertex_writer, const EdgeWriter &edgeWriter);
 
   /** Export graph and its data to a file for visualization and debugging
    * @param filename name of output file
    **/
   template <typename VertexT, typename EdgeT, typename VertexWriter>
-  static void
-  serialize_to_vtk(const graaf::undirected_graph<VertexT, EdgeT> &graph,
-                   const std::string &filename,
-                   const VertexWriter &vertex_writer);
+  static void serialize_to_vtk(const graaf::undirected_graph<VertexT, EdgeT> &graph, const std::string &filename,
+                               const VertexWriter &vertex_writer);
 };
 
-template <typename VertexT, typename EdgeT, typename VertexWriter,
-          typename EdgeWriter>
-void GraphIO::serialize_to_graphviz(
-    const graaf::undirected_graph<VertexT, EdgeT> &graph,
-    const std::string &filename, const VertexWriter &vertex_writer,
-    const EdgeWriter &edgeWriter) {
+template <typename VertexT, typename EdgeT, typename VertexWriter, typename EdgeWriter>
+void GraphIO::serialize_to_graphviz(const graaf::undirected_graph<VertexT, EdgeT> &graph, const std::string &filename,
+                                    const VertexWriter &vertex_writer, const EdgeWriter &edgeWriter) {
   const std::filesystem::path filePath(filename);
   graaf::io::to_dot(graph, filePath, vertex_writer, edgeWriter);
 }
 
 template <typename VertexT, typename EdgeT, typename VertexWriter>
-void GraphIO::serialize_to_vtk(
-    const graaf::undirected_graph<VertexT, EdgeT> &graph,
-    const std::string &filename, const VertexWriter &vertex_writer) {
+void GraphIO::serialize_to_vtk(const graaf::undirected_graph<VertexT, EdgeT> &graph, const std::string &filename,
+                               const VertexWriter &vertex_writer) {
   const std::filesystem::path filePath(filename);
   std::ofstream outfile(filename);
 
@@ -56,10 +46,9 @@ void GraphIO::serialize_to_vtk(
   const auto num_pts = graph.vertex_count();
   const auto num_edges = graph.edge_count();
 
-  const auto piece_header =
-      fmt::format("    <Piece NumberOfPoints=\"{}\" NumberOfLines=\"{}\" "
-                  "NumberOfPolys=\"0\">\n",
-                  num_pts, num_edges);
+  const auto piece_header = fmt::format("    <Piece NumberOfPoints=\"{}\" NumberOfLines=\"{}\" "
+                                        "NumberOfPolys=\"0\">\n",
+                                        num_pts, num_edges);
   outfile << piece_header;
   outfile << "      <!-- Points -->\n";
   outfile << "      <Points>\n";
