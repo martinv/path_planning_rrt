@@ -4,7 +4,7 @@
 #include <graaflib/io/dot.h>
 #include <graaflib/types.h>
 
-#include <fmt/core.h>
+#include <format>
 
 #include <filesystem>
 #include <string>
@@ -46,7 +46,7 @@ void GraphIO::serialize_to_vtk(const graaf::undirected_graph<VertexT, EdgeT> &gr
   const auto num_pts = graph.vertex_count();
   const auto num_edges = graph.edge_count();
 
-  const auto piece_header = fmt::format("    <Piece NumberOfPoints=\"{}\" NumberOfLines=\"{}\" "
+  const auto piece_header = std::format("    <Piece NumberOfPoints=\"{}\" NumberOfLines=\"{}\" "
                                         "NumberOfPolys=\"0\">\n",
                                         num_pts, num_edges);
   outfile << piece_header;
@@ -66,7 +66,7 @@ void GraphIO::serialize_to_vtk(const graaf::undirected_graph<VertexT, EdgeT> &gr
 
   for (const auto &vertex_id : vertex_ids) {
     const auto &vertex_data = graph.get_vertex(vertex_id);
-    outfile << fmt::format("          {}\n", vertex_writer(vertex_data));
+    outfile << std::format("          {}\n", vertex_writer(vertex_data));
   }
 
   outfile << "        </DataArray>\n";
@@ -80,7 +80,7 @@ void GraphIO::serialize_to_vtk(const graaf::undirected_graph<VertexT, EdgeT> &gr
     const auto &vertex_neighbours = graph.get_neighbors(vertex_i);
     for (const auto &vertex_j : vertex_neighbours)
       if (vertex_i < vertex_j) {
-        outfile << fmt::format("          {} {}\n", vertex_i, vertex_j);
+        outfile << std::format("          {} {}\n", vertex_i, vertex_j);
       }
   }
   outfile << "        </DataArray>\n";
@@ -92,11 +92,11 @@ void GraphIO::serialize_to_vtk(const graaf::undirected_graph<VertexT, EdgeT> &gr
     const auto &vertex_neighbours = graph.get_neighbors(vertex_i);
     for (const auto &vertex_j : vertex_neighbours)
       if (vertex_i < vertex_j) {
-        outfile << fmt::format("          {}\n", connectivity_offset);
+        outfile << std::format("          {}\n", connectivity_offset);
         connectivity_offset += 2;
       }
   }
-  outfile << fmt::format("          {}\n", connectivity_offset);
+  outfile << std::format("          {}\n", connectivity_offset);
 
   outfile << "        </DataArray>\n";
   outfile << "      </Lines>\n";

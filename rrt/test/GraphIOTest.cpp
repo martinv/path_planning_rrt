@@ -9,13 +9,13 @@ TEST(GraphIOTest, WriteGraphToGraphviz) {
 
   const auto graphviz_vertex_writer{[](graaf::vertex_id_t vertex_id, const VertexT &vertex) -> std::string {
     std::string color = "mediumspringgreen";
-    return fmt::format("label=\"{} [{:.3f},{:.3f}]\", fillcolor={}, style=filled", vertex_id, vertex.x(), vertex.y(),
+    return std::format("label=\"{} [{:.3f},{:.3f}]\", fillcolor={}, style=filled", vertex_id, vertex.x(), vertex.y(),
                        color);
   }};
 
   const auto graphviz_edge_writer{[](const graaf::edge_id_t & /*edge_id*/, const auto &edge) -> std::string {
     const std::string style{"solid"};
-    return fmt::format("label=\"{}\", style={}, color=gray, fontcolor=gray", edge, style);
+    return std::format("label=\"{}\", style={}, color=gray, fontcolor=gray", edge, style);
   }};
 
   graaf::undirected_graph<VertexT, EdgeT> graph;
@@ -39,19 +39,23 @@ TEST(GraphIOTest, WriteGraphToVtk) {
   using EdgeT = double;
 
   const auto vtk_vertex_writer{[](const VertexT &vertex) -> std::string {
-    return fmt::format("{:.6f} {:.6f} {:.6f}", vertex.x(), vertex.y(), 0.0);
+    return std::format("{:.6f} {:.6f} {:.6f}", vertex.x(), vertex.y(), 0.0);
   }};
 
   graaf::undirected_graph<VertexT, EdgeT> graph;
   const auto v0 = graph.add_vertex(VertexT(-4.0, -1.0));
   const auto v1 = graph.add_vertex(VertexT(4.0, -1.0));
-  const auto v2 = graph.add_vertex(VertexT(4.0, 1.0));
-  const auto v3 = graph.add_vertex(VertexT(-4.0, 1.0));
+  const auto v2 = graph.add_vertex(VertexT(5.7, 0.2));
+  const auto v3 = graph.add_vertex(VertexT(3.0, 3.0));
+  const auto v4 = graph.add_vertex(VertexT(-0.7, 0.8));
+  const auto v5 = graph.add_vertex(VertexT(-4.0, 1.0));
 
   graph.add_edge(v0, v1, 1.1);
   graph.add_edge(v1, v2, 2.1);
   graph.add_edge(v2, v3, 3.1);
-  graph.add_edge(v3, v0, 4.1);
+  graph.add_edge(v3, v4, 4.1);
+  graph.add_edge(v4, v5, 5.1);
+  graph.add_edge(v5, v0, 6.1);
 
   GraphIO graph_io;
   graph_io.serialize_to_vtk(graph, "test_graph.vtp", vtk_vertex_writer);

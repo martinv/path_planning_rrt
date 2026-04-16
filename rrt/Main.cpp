@@ -11,7 +11,8 @@ int main() {
   rrt::geo::Point<double> point(2.0, 3.0);
 
   std::vector<rrt::geo::Point<double>> points = {rrt::geo::Point(2.0, 2.0), rrt::geo::Point(3.0, 2.0),
-                                                 rrt::geo::Point(3.0, 3.0), rrt::geo::Point(2.0, 3.0)};
+                                                 rrt::geo::Point(3.8, 2.6), rrt::geo::Point(3.0, 3.0),
+                                                 rrt::geo::Point(2.4, 2.8), rrt::geo::Point(2.0, 3.0)};
 
   rrt::geo::Polygon<double> polygon(std::move(points));
 
