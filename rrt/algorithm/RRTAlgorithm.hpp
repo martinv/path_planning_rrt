@@ -5,6 +5,7 @@
 
 #include <graaflib/graph.h>
 
+#include "geo/include/BoundingBox.hpp"
 #include "geo/include/Point.hpp"
 #include "geo/include/Polygon.hpp"
 
@@ -16,7 +17,12 @@ public:
 
   void construct_rrt_tree(const rrt::geo::Point<T> &start, const rrt::geo::Point<T> &destination,
                           const std::vector<geo::Polygon<T>> &obstacles,
-                          graaf::undirected_graph<typename rrt::geo::Point<T>, T> &graph) {}
+                          graaf::undirected_graph<typename rrt::geo::Point<T>, T> &graph) {
+
+    graph.add_vertex(start);
+    // auto rand_val = m_dist(m_randomGen);
+    rrt::geo::BoundingBox<T> bbox(start, destination);
+  }
 
 private:
   std::mt19937 m_randomGen;

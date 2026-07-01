@@ -49,6 +49,8 @@ TEST(GraphIOTest, WriteGraphToVtk) {
   const auto v3 = graph.add_vertex(VertexT(3.0, 3.0));
   const auto v4 = graph.add_vertex(VertexT(-0.7, 0.8));
   const auto v5 = graph.add_vertex(VertexT(-4.0, 1.0));
+  const auto v6 = graph.add_vertex(VertexT(-5.0, -1.0));
+  const auto v7 = graph.add_vertex(VertexT(-5.0, 4.0));
 
   graph.add_edge(v0, v1, 1.1);
   graph.add_edge(v1, v2, 2.1);
@@ -56,6 +58,7 @@ TEST(GraphIOTest, WriteGraphToVtk) {
   graph.add_edge(v3, v4, 4.1);
   graph.add_edge(v4, v5, 5.1);
   graph.add_edge(v5, v0, 6.1);
+  graph.add_edge(v6, v7, 7.1);
 
   GraphIO graph_io;
   graph_io.serialize_to_vtk(graph, "test_graph.vtp", vtk_vertex_writer);
